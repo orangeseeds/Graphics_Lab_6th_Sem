@@ -1,4 +1,4 @@
 # Graphics_Lab_6th_Sem
-<h3>Flag of Nepal Implemented using WebGl and javaScript</h3>
+<h3>Flag of Nepal Implemented using WebGL and javaScript</h3>
 <br/>
-<link>https://flagwebgl.netlify.app/</link>
+<link target="_blank">https://flagwebgl.netlify.app/</link>
