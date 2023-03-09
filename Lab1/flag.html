@@ -10,20 +10,19 @@
     <meta name="author" content="Chandan Kumar Mahato" />
     <title>Nepal Flag WebGL</title>
     <link rel="stylesheet" href="./styleSheet/flag.css">
+<script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
+      integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
+      crossorigin="anonymous"
+      defer
+    ></script>
 </head>
 
 <body>
     <div class="Container">
         <h1>Nepal Flag WebGL!</h1>
-        <div class="moon">
-            <img src="./assets/moon.png" alt="moon">
-        </div>
-        <div class="sun">
-            <img src="./assets/sun.png" alt="sun">
-        </div>
-        <div class="stand"></div>
         <div class="canvas_Container">
-            <canvas class="display_area" id="canvas"></canvas>
+            <canvas class="" id="glcanvas"></canvas>
         </div>
 
     </div>
@@ -50,10 +49,9 @@
         <h3>Group: Computer Engineering</h3>
         <h3>Kathmandu University</h3>
     </div>
-    <script src="./javaScript/data.js"></script>
-    <script src="./javaScript/flag.js"></script>
-    <script src="./javaScript/red.js"></script>
-    <script src="./javaScript/blue.js"></script>
+    <script src="./javaScript/lib.js"></script>
+    <script src="./javaScript/shapes.js"></script>
+    <script src="./javaScript/app.js"></script>
 </body>
 
 </html>
