@@ -30,11 +30,12 @@ class Vertex {
   }
 }
 
-class Triangle {
-  constructor(v1, v2, v3) {
+class Triangle { 
+  constructor(v1, v2, v3, shader) {
     this.v1 = v1
     this.v2 = v2
     this.v3 = v3
+    this.shader = shader
   }
 
   get buffer() {
@@ -79,3 +80,31 @@ class Circle {
   }
 
 }
+
+
+
+/*
+class ColorRGBA {
+  constructor(r, g, b, a) {
+    this.r = r
+    this.g = g
+    this.b = b
+    this.a = a
+  }
+
+  toArray() {
+    return [this.r, this.g, this.b, this.a]
+  }
+
+  toText(){
+    return `${this.r},${this.g},${this.b},${this.a}`
+  }
+}
+
+class Shader {
+  constructor(color){    
+    this.color = color
+  }
+}
+
+*/

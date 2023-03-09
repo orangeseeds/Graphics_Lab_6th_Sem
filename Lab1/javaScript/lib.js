@@ -4,72 +4,77 @@ class Renderer {
     this.ctx = canvas.getContext('webgl')
   }
 
-  #initShaders() {
-    let vertCode =
-      'attribute vec3 coordinates;' +
+  // buildAndCompileShaders(shader) {
+  //   let vertCode =
+  //     'attribute vec3 coordinates;' +
 
-      'void main(void) {' +
-      ' gl_Position = vec4(coordinates, 1.0);' +
-      '}';
+  //     'void main(void) {' +
+  //     ' gl_Position = vec4(coordinates, 1.0);' +
+  //     '}';
 
-    let fragCode =
-      'void main(void) {' +
-      ' gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);' +
-      '}';
+  //   let fragCode =
+  //     'void main(void) {' +
+  //     ' gl_FragColor = vec4(' + shader.color.toText() + ');' +
+  //     '}';
 
-    let vertShader = this.ctx.createShader(this.ctx.VERTEX_SHADER);
-    this.ctx.shaderSource(vertShader, vertCode);
-    this.ctx.compileShader(vertShader);
+  //   let vertShader = this.ctx.createShader(this.ctx.VERTEX_SHADER);
+  //   this.ctx.shaderSource(vertShader, vertCode);
+  //   this.ctx.compileShader(vertShader);
 
-    var fragShader = this.ctx.createShader(this.ctx.FRAGMENT_SHADER);
-    this.ctx.shaderSource(fragShader, fragCode);
-    this.ctx.compileShader(fragShader);
+  //   var fragShader = this.ctx.createShader(this.ctx.FRAGMENT_SHADER);
+  //   this.ctx.shaderSource(fragShader, fragCode);
+  //   this.ctx.compileShader(fragShader);
 
-    var shaderProgram = this.ctx.createProgram();
-    this.ctx.attachShader(shaderProgram, vertShader);
-    this.ctx.attachShader(shaderProgram, fragShader);
-    this.ctx.linkProgram(shaderProgram);
-    this.ctx.useProgram(shaderProgram);
-    this.shaderProgram = shaderProgram
-  }
+  //   var shaderProgram = this.ctx.createProgram();
+  //   this.ctx.attachShader(shaderProgram, vertShader);
+  //   this.ctx.attachShader(shaderProgram, fragShader);
+  //   this.ctx.linkProgram(shaderProgram);
+  //   this.ctx.useProgram(shaderProgram);
+  //   this.shaderProgram = shaderProgram
+  // }
 
   #computeTriangles() {
     if (this.scene.container.triangles == 0) {
       return
     }
 
-    let indices = [...Array(3 * this.scene.container.triangles).keys()]
+    // let indices = [...Array(3 * this.scene.container.triangles).keys()]
 
     const vertices = []
     this.scene.objects.forEach((object) => {
-
-      if (object instanceof Triangle) {
-        console.log(object.buffer)
+      // if (object instanceof Triangle) {
+      //   console.log(object.buffer)
         vertices.push(...object.buffer)
-      }
+      // }
     })
 
 
     var vertex_buffer = this.ctx.createBuffer();
     this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, vertex_buffer);
     this.ctx.bufferData(this.ctx.ARRAY_BUFFER, new Float32Array(vertices), this.ctx.STATIC_DRAW);
-    this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, null);
+    // this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, null);
 
-    var Index_Buffer = this.ctx.createBuffer();
-    this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, Index_Buffer);
-    this.ctx.bufferData(this.ctx.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.ctx.STATIC_DRAW);
-    this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, null);
-    this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, vertex_buffer);
-    this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, Index_Buffer);
-
-    var coord = this.ctx.getAttribLocation(this.shaderProgram, "coordinates");
-    this.ctx.vertexAttribPointer(coord, 3, this.ctx.FLOAT, false, 0, 0);
-    this.ctx.enableVertexAttribArray(coord);
+    // var Index_Buffer = this.ctx.createBuffer();
+    // this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, Index_Buffer);
+    // this.ctx.bufferData(this.ctx.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.ctx.STATIC_DRAW);
+    // this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, null);
+    // this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, vertex_buffer);
+    // this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, Index_Buffer);
   }
 
   render(scene) {
     this.scene = scene
-    this.#initShaders()
+
+    // this.buildAndCompileShaders(
+    //   new Shader(
+    //     new ColorRGBA(1, 0, 0, 1)
+    //   )
+    // )
+    // this.buildAndCompileShaders(
+    //   new Shader(
+    //     new ColorRGBA(1, 2, 0, 1)
+    //   )
+    // )
 
     this.#computeTriangles()
 
@@ -78,7 +83,16 @@ class Renderer {
     this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
     this.ctx.viewport(0, 0, canvas.width, canvas.height);
 
-    this.ctx.drawElements(this.ctx.TRIANGLES, this.scene.container.triangles * 3, this.ctx.UNSIGNED_SHORT, 0);
+    this.scene.objects.forEach((object) => {
+    this.shaderProgram = object.shader.buildAndCompile(this.ctx)
+
+    var coord = this.ctx.getAttribLocation(this.shaderProgram, "coordinates");
+    this.ctx.vertexAttribPointer(coord, 3, this.ctx.FLOAT, false, 0, 0);
+    this.ctx.enableVertexAttribArray(coord);
+
+      
+    this.ctx.drawArrays(this.ctx.TRIANGLES, 0, 3);
+    })
   }
 }
 
@@ -102,11 +116,55 @@ class Scene {
   }
 }
 
-class ColorRGBA{
-  constructor(r,g,b,a){
+
+class ColorRGBA {
+  constructor(r, g, b, a) {
     this.r = r
     this.g = g
     this.b = b
     this.a = a
+  }
+
+  toArray() {
+    return [this.r, this.g, this.b, this.a]
+  }
+
+  toText() {
+    return `${this.r},${this.g},${this.b},${this.a}`
+  }
+}
+
+class Shader {
+  constructor(color) {
+    this.color = color
+  }
+
+  buildAndCompile(ctx) {
+    let vertCode =
+      'attribute vec3 coordinates;' +
+
+      'void main(void) {' +
+      ' gl_Position = vec4(coordinates, 1.0);' +
+      '}';
+
+    let fragCode =
+      'void main(void) {' +
+      ' gl_FragColor = vec4(' + this.color.toText() + ');' +
+      '}';
+
+    let vertShader = ctx.createShader(ctx.VERTEX_SHADER);
+    ctx.shaderSource(vertShader, vertCode);
+    ctx.compileShader(vertShader);
+
+    var fragShader = ctx.createShader(ctx.FRAGMENT_SHADER);
+    ctx.shaderSource(fragShader, fragCode);
+    ctx.compileShader(fragShader);
+
+    let shaderProgram= ctx.createProgram();
+    ctx.attachShader(shaderProgram, vertShader);
+    ctx.attachShader(shaderProgram, fragShader);
+    ctx.linkProgram(shaderProgram);
+    ctx.useProgram(shaderProgram);
+    return shaderProgram
   }
 }
