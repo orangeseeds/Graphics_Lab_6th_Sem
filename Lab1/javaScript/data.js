@@ -24,7 +24,7 @@ let t4 = [...v10, ...v11, ...v12];
 const vertexData = [];
 const dataArray = [...t1, ...t2, ...t3, ...t4];
 for (let i = 0; i < dataArray.length; i++) {
-  let y = dataArray[i] / 7;
+  let y = dataArray[i] / 6.5;
   vertexData.push(y);
 }
 
