@@ -20,9 +20,6 @@ void main() {
   gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
   gl.useProgram(program);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    gl.drawArrays(gl.TRIANGLES, 3, 3);
-    gl.drawArrays(gl.TRIANGLES, 6, 3);
-
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  gl.drawArrays(gl.TRIANGLES, 3, 3);
 }
-

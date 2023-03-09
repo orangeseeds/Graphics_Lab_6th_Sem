@@ -20,20 +20,8 @@ void main() {
   gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
   gl.useProgram(program);
+  gl.drawArrays(gl.TRIANGLES, 6, 3);
   gl.drawArrays(gl.TRIANGLES, 9, 3);
-  gl.drawArrays(gl.TRIANGLES, 12, 3);
-
-  gl.drawArrays(gl.TRIANGLES, 15, 3);
-  gl.drawArrays(gl.TRIANGLES, 18, 3);
-
-  gl.drawArrays(gl.TRIANGLES, 21, 3);
-  gl.drawArrays(gl.TRIANGLES, 24, 3);
-
-  gl.drawArrays(gl.TRIANGLES, 27, 3);
-  gl.drawArrays(gl.TRIANGLES, 30, 3);
-
-  gl.drawArrays(gl.TRIANGLES, 33, 3);
-  gl.drawArrays(gl.TRIANGLES, 36, 3);
 }
 
 blueTriangle();
