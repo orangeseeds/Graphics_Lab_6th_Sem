@@ -27,4 +27,8 @@ void main() {
   gl.drawArrays(gl.TRIANGLES, 42, 3);
   gl.drawArrays(gl.TRIANGLES, 45, 3);
 }
+
+blueTriangle();
+redTriangle();
 Moon();
+Sun();

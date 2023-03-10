@@ -23,6 +23,3 @@ void main() {
   gl.drawArrays(gl.TRIANGLES, 6, 3);
   gl.drawArrays(gl.TRIANGLES, 9, 3);
 }
-
-blueTriangle();
-redTriangle();

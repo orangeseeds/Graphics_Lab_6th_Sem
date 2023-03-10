@@ -31,4 +31,3 @@ void main() {
   gl.drawArrays(gl.TRIANGLES, 30, 3);
   gl.drawArrays(gl.TRIANGLES, 33, 3);
 }
-Sun();
