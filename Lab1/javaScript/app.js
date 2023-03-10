@@ -1,36 +1,29 @@
 
-var canvas = document.getElementById('glcanvas');
-canvas.width = 800
-canvas.height = 600
+try {
+  var canvas = document.getElementById('glcanvas');
+  canvas.width = 800
+  canvas.height = 600
 
-let scene = new Scene()
-let renderer = new Renderer(canvas)
+  let scene = new Scene()
+  let renderer = new Renderer(canvas)
 
-let triangle1 = new Triangle(
-  new Vertex(-0.5, 0.5),
-  new Vertex(-0.5, -0.5),
-  new Vertex(0.5, -0.5),
-  new Shader(
-    new ColorRGBA(1,0,0,1)
-  )
-)
+  let group = new Group()
 
-// let triangle2 = new Triangle(
-//   new Vertex(-0.5, 0.5),
-//   new Vertex(-0.5, -0.5),
-//   new Vertex(0.5, -0.5)
-// )
-
-triangle1.scale(0.5,0.5)
-// triangle2.scale(0.5,0.5)
-
-// triangle2.translate(0,0.35)
+  let triangle = new RATriangle(0.5, 0.5, new ColorRGBA(1, 0, 0, 1))
+  let triangle2 = new RATriangle(0.5, 0.5, new ColorRGBA(1, 0, 0, 1))
+  triangle.translate(-0.3, 0.3)
 
 
-// triangle.rotate(
-//   new Vertex(-0.5,-0.5),
-//   120
-// )
+  group.add(triangle, triangle2)
+  group.translate(0.2,0.2)
 
-scene.add(triangle1)
-renderer.render(scene)
+  // console.log(triangle)
+
+  let circle = new Circle(0.5, new ColorRGBA(1,0,0,1))
+  console.log(circle.buffer)
+  
+  scene.add(group, circle)
+  renderer.render(scene)
+} catch (e) {
+  console.log(e)
+}

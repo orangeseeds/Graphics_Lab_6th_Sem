@@ -1,98 +1,72 @@
+const
+  GLenum_POINTS = "GLenum_POINTS",
+  GLenum_LINE_STRIP = "GLenum_LINE_STRIP",
+  GLenum_LINE_LOOP = "GLenum_LINE_LOOP",
+  GLenum_LINES = "GLenum_LINES",
+  GLenum_TRIANGLE_STRIP = "GLenum_TRIANGLE_STRIP",
+  GLenum_TRIANGLE_FAN = "GLenum_TRIANGLE_FAN",
+  GLenum_TRIANGLES = "GLenum_TRIANGLES"
+
 class Renderer {
   constructor(canvas) {
     this.canvas = canvas
     this.ctx = canvas.getContext('webgl')
   }
-
-  // buildAndCompileShaders(shader) {
-  //   let vertCode =
-  //     'attribute vec3 coordinates;' +
-
-  //     'void main(void) {' +
-  //     ' gl_Position = vec4(coordinates, 1.0);' +
-  //     '}';
-
-  //   let fragCode =
-  //     'void main(void) {' +
-  //     ' gl_FragColor = vec4(' + shader.color.toText() + ');' +
-  //     '}';
-
-  //   let vertShader = this.ctx.createShader(this.ctx.VERTEX_SHADER);
-  //   this.ctx.shaderSource(vertShader, vertCode);
-  //   this.ctx.compileShader(vertShader);
-
-  //   var fragShader = this.ctx.createShader(this.ctx.FRAGMENT_SHADER);
-  //   this.ctx.shaderSource(fragShader, fragCode);
-  //   this.ctx.compileShader(fragShader);
-
-  //   var shaderProgram = this.ctx.createProgram();
-  //   this.ctx.attachShader(shaderProgram, vertShader);
-  //   this.ctx.attachShader(shaderProgram, fragShader);
-  //   this.ctx.linkProgram(shaderProgram);
-  //   this.ctx.useProgram(shaderProgram);
-  //   this.shaderProgram = shaderProgram
-  // }
-
-  #computeTriangles() {
-    if (this.scene.container.triangles == 0) {
-      return
-    }
-
-    // let indices = [...Array(3 * this.scene.container.triangles).keys()]
+  #computeObject2D() {
+    // if (this.scene.container.triangles == 0) {
+    //   return
+    // }
 
     const vertices = []
     this.scene.objects.forEach((object) => {
-      // if (object instanceof Triangle) {
-      //   console.log(object.buffer)
-        vertices.push(...object.buffer)
-      // }
+      vertices.push(...object.buffer)
     })
 
 
     var vertex_buffer = this.ctx.createBuffer();
     this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, vertex_buffer);
     this.ctx.bufferData(this.ctx.ARRAY_BUFFER, new Float32Array(vertices), this.ctx.STATIC_DRAW);
-    // this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, null);
-
-    // var Index_Buffer = this.ctx.createBuffer();
-    // this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, Index_Buffer);
-    // this.ctx.bufferData(this.ctx.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.ctx.STATIC_DRAW);
-    // this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, null);
-    // this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER, vertex_buffer);
-    // this.ctx.bindBuffer(this.ctx.ELEMENT_ARRAY_BUFFER, Index_Buffer);
   }
 
   render(scene) {
     this.scene = scene
-
-    // this.buildAndCompileShaders(
-    //   new Shader(
-    //     new ColorRGBA(1, 0, 0, 1)
-    //   )
-    // )
-    // this.buildAndCompileShaders(
-    //   new Shader(
-    //     new ColorRGBA(1, 2, 0, 1)
-    //   )
-    // )
-
-    this.#computeTriangles()
+    this.#computeObject2D()
 
     this.ctx.clearColor(0.5, 0.5, 0.5, 0.9);
     this.ctx.enable(this.ctx.DEPTH_TEST);
     this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
     this.ctx.viewport(0, 0, canvas.width, canvas.height);
 
+    this.index = 0
     this.scene.objects.forEach((object) => {
-    this.shaderProgram = object.shader.buildAndCompile(this.ctx)
+      this.shaderProgram = object.shader.buildAndCompile(this.ctx)
 
-    var coord = this.ctx.getAttribLocation(this.shaderProgram, "coordinates");
-    this.ctx.vertexAttribPointer(coord, 3, this.ctx.FLOAT, false, 0, 0);
-    this.ctx.enableVertexAttribArray(coord);
+      var coord = this.ctx.getAttribLocation(this.shaderProgram, "coordinates");
+      this.ctx.vertexAttribPointer(coord, 3, this.ctx.FLOAT, false, 0, 0);
+      this.ctx.enableVertexAttribArray(coord);
 
-      
-    this.ctx.drawArrays(this.ctx.TRIANGLES, 0, 3);
+      this.ctx.drawArrays(this.#selectDrawingMode(object.mode), this.index, object.vertices.length);
+      this.index += object.vertices.length
     })
+  }
+
+  #selectDrawingMode(mode) {
+    switch (mode) {
+      case (GLenum_POINTS):
+        return this.ctx.POINTS
+      case (GLenum_LINE_STRIP):
+        return this.ctx.LINE_STRIP
+      case (GLenum_LINE_LOOP):
+        return this.ctx.LINE_LOOP
+      case (GLenum_LINES):
+        return this.ctx.LINES
+      case (GLenum_TRIANGLE_STRIP):
+        return this.ctx.TRIANGLE_STRIP
+      case (GLenum_TRIANGLE_FAN):
+        return this.ctx.TRIANGLE_FAN
+      case (GLenum_TRIANGLES):
+        return this.ctx.TRIANGLES
+    }
   }
 }
 
@@ -108,11 +82,24 @@ class Scene {
 
   add(...objects) {
     objects.forEach((obj) => {
-      if (obj instanceof Triangle) {
-        this.container.triangles++
-        this.objects.push(obj)
+      if (obj.children.length > 0) {
+        obj.children.forEach((child) => {
+          this.objects.push(child)
+          this.#tallyObject2D(child)
+        })
+        return
       }
+      this.objects.push(obj)
+      this.#tallyObject2D(obj)
     })
+    // console.log(this.objects)
+  }
+
+  #tallyObject2D(obj) {
+    switch (obj.type) {
+      case ("Triangle"):
+        this.container.triangles++
+    }
   }
 }
 
@@ -160,7 +147,7 @@ class Shader {
     ctx.shaderSource(fragShader, fragCode);
     ctx.compileShader(fragShader);
 
-    let shaderProgram= ctx.createProgram();
+    let shaderProgram = ctx.createProgram();
     ctx.attachShader(shaderProgram, vertShader);
     ctx.attachShader(shaderProgram, fragShader);
     ctx.linkProgram(shaderProgram);
