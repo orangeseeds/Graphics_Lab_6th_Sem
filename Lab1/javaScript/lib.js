@@ -32,7 +32,7 @@ class Renderer {
     this.scene = scene
     this.#computeObject2D()
 
-    this.ctx.clearColor(0.5, 0.5, 0.5, 0.9);
+    this.ctx.clearColor(...this.scene.color.asArray());
     this.ctx.enable(this.ctx.DEPTH_TEST);
     this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
     this.ctx.viewport(0, 0, canvas.width, canvas.height);
@@ -45,6 +45,7 @@ class Renderer {
       this.ctx.vertexAttribPointer(coord, 3, this.ctx.FLOAT, false, 0, 0);
       this.ctx.enableVertexAttribArray(coord);
 
+      // console.log(object.vertices)
       this.ctx.drawArrays(this.#selectDrawingMode(object.mode), this.index, object.vertices.length);
       this.index += object.vertices.length
     })
@@ -75,9 +76,10 @@ class GLObjectContainer {
 }
 
 class Scene {
-  constructor() {
+  constructor(color) {
     this.objects = []
     this.container = new GLObjectContainer()
+    this.color = color
   }
 
   add(...objects) {
@@ -112,11 +114,11 @@ class ColorRGBA {
     this.a = a
   }
 
-  toArray() {
+  asArray() {
     return [this.r, this.g, this.b, this.a]
   }
 
-  toText() {
+  asText() {
     return `${this.r},${this.g},${this.b},${this.a}`
   }
 }
@@ -128,6 +130,7 @@ class Shader {
 
   buildAndCompile(ctx) {
     let vertCode =
+      'precision highp float;' +
       'attribute vec3 coordinates;' +
 
       'void main(void) {' +
@@ -135,8 +138,9 @@ class Shader {
       '}';
 
     let fragCode =
+      ' precision highp float;' +
       'void main(void) {' +
-      ' gl_FragColor = vec4(' + this.color.toText() + ');' +
+      ' gl_FragColor = vec4(' + this.color.asText() + ');' +
       '}';
 
     let vertShader = ctx.createShader(ctx.VERTEX_SHADER);
