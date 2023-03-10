@@ -33,3 +33,13 @@ void main() {
 `
 );
 gl.compileShader(vertexShader);
+
+function getResolution() {
+  alert(
+    "Your screen resolution is: " +
+      (window.screen.width * window.devicePixelRatio).toFixed(2) +
+      "x" +
+      (window.screen.height * window.devicePixelRatio).toFixed(2)
+  );
+}
+getResolution();
