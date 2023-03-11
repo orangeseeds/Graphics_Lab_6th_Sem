@@ -1,35 +1,17 @@
+/*
+  this needs to be imported to use some matrix computations.
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix.js"></script>
+*/
+
+
 var canvas = document.getElementById('glcanvas');
 
-let gl = canvas.getContext('webgl')
+let upperTriangle = new RATriangleGeometry()
+let lowerTriangle = new RATriangleGeometry()
+lowerTriangle.position.translate([0, -0.2])
 
-let shader = new Shader(gl, vertexShaderSource, fragmentShaderSource)
-
-let vertices = [
-  0, 0, 0,
-  0, 0.5, 0,
-  0.5, 0, 0
-]
-let indices = [0, 1, 2]
-
-let geometry = new BufferGeometry(gl, vertices, indices)
-let circle = new CircleGeometry(gl, [0,0,0], 0.2)
-
-let group = new Group()
-group.add(geometry,circle)
-
-let group1 = new Group()
-group1.add(group)
-
+let scene = new Scene()
+scene.add(upperTriangle, lowerTriangle)
 
 let renderer = new Renderer(canvas)
-renderer.renderScene(group1)
-// geometry.draw()
-
-// circle.draw()
-
-// ========
-
-// let color = new ColorRGBA(1, 0, 0, 1)
-// let shape = new Geometry(gl, shader, vertices, indices, color)
-
-// shape.draw()
+renderer.render(scene)

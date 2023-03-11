@@ -18,7 +18,6 @@ const fragmentShaderSource = `
 
 class Position {
   constructor(vertices) {
-    // this.matrix = mat3.fromValues(...vertices)
     this.vertices = vertices
   }
 

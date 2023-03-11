@@ -1,11 +1,16 @@
 class Scene {
   constructor() {
-    this.objects = {}
+    this.objects = []
     this.isScene = true
+    this.color = [0.8, 0.8, 0.8, 1]
   }
 
   add(...objects) {
     this.objects.push(...objects)
+  }
+
+  setBackgroundColor(color){
+    this.color = color
   }
 }
 
@@ -52,7 +57,7 @@ class Group {
       this.#rotate(child, rad)
     })
   }
-  
+
   #scale(object, vector) {
     if (object.isGroup) {
       object.children.forEach((c) => {

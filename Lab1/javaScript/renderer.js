@@ -48,7 +48,7 @@ class Renderer {
 
       const shader = new Shader(this.gl, vertexShaderSource, fragmentShaderSource)
       shader.use()
-      shader.setColor([1, 0, 0, 1])
+      shader.setColor(object.color)
 
       this.gl.bindBuffer(this.gl.ARRAY_BUFFER, object.vertexBuffer);
 
@@ -61,14 +61,19 @@ class Renderer {
     }
   }
 
-  renderScene(...geometries) {
-    this.gl.clearColor(0.5, 0.5, 0.5, 0.9);
+  #renderScene() {
+    this.gl.clearColor(...this.scene.color);
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-    this.gl.viewport(0, 0, 300, 300)
+    this.gl.viewport(0, 0, canvas.width, canvas.height)
 
-    geometries.forEach((geometry) => {
-      this.renderObject(geometry)
+    this.scene.objects.forEach((object) => {
+      this.renderObject(object)
     })
+  }
+
+  render(scene){
+    this.scene = scene
+    this.#renderScene(scene)
   }
 }
