@@ -10,19 +10,14 @@
     <meta name="author" content="Chandan Kumar Mahato" />
     <title>Nepal Flag WebGL</title>
     <link rel="stylesheet" href="./styleSheet/flag.css">
-<script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
-      integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
-      crossorigin="anonymous"
-      defer
-    ></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix.js"></script>
 </head>
 
 <body>
     <div class="Container">
         <h1>Nepal Flag WebGL!</h1>
         <div class="canvas_Container">
-            <canvas class="" id="glcanvas"></canvas>
+            <canvas class="" width=300 height=300 id="glcanvas"></canvas>
         </div>
 
     </div>
@@ -49,9 +44,16 @@
         <h3>Group: Computer Engineering</h3>
         <h3>Kathmandu University</h3>
     </div>
-    <script src="./javaScript/lib.js"></script>
-    <script src="./javaScript/shapes.js"></script>
+        <!--
+                -->
+
+    <script src="./javaScript/matrix.js"></script>
+    <script src="./javaScript/shaders.js"></script>
+    <script src="./javaScript/geometries.js"></script>
+    <script src="./javaScript/scene.js"></script>
+    <script src="./javaScript/renderer.js"></script>
     <script src="./javaScript/app.js"></script>
+
 </body>
 
 </html>
