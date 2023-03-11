@@ -36,5 +36,4 @@ function Triangles(color, start, end) {
 }
 Triangles(`void main() {gl_FragColor = vec4(0, 0, 1, 1);}`, 6, 9); //Blue
 Triangles(`void main() {gl_FragColor = vec4(1, 0, 0, 1);}`, 0, 3); //Red
-Triangles(`void main() {gl_FragColor = vec4(1, 1, 1, 1);}`, 36, 45); //Moon
-Triangles(`void main() {gl_FragColor = vec4(1, 1, 1, 1);}`, 12, 33); //Sun
+Triangles(`void main() {gl_FragColor = vec4(1, 1, 1, 1);}`, 12, 230); //White
