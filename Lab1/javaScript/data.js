@@ -9,13 +9,13 @@ let v4 = [0, 3, 0];
 let v5 = [0, 6, 0];
 let v6 = [5, 3, 0];
 let t2 = [...v4, ...v5, ...v6];
-
 //Blue PART
+//vertices of tirangle 3
 let v7 = [5.75, 2.75, 0];
 let v8 = [-0.25, 6.5, 0];
 let v9 = [-0.25, 2.75, 0];
 let t3 = [...v7, ...v8, ...v9];
-
+//vertices of tirangle 4
 let v10 = [-0.25, -0.25, 0];
 let v11 = [5.75, -0.25, 0];
 let v12 = [-0.25, 4.25, 0];
@@ -42,7 +42,6 @@ function createSunVertexList(radius, xo, yo) {
   }
 }
 createSunVertexList(0.75, 1.25, 1.25);
-
 //moon
 var moonVertexData = [];
 function createMoonVertexList(radius, xo, yo) {
