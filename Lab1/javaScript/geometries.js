@@ -1,35 +1,3 @@
-class Vertex {
-  constructor(x, y) {
-    this.x = x
-    this.y = y
-  }
-
-  toArray() {
-    return [this.x, this.y]
-  }
-
-  translate(x, y) {
-    this.x += x
-    this.y += y
-  }
-
-  rotate(center, angle) {
-    let rads = (Math.PI / 180) * angle,
-      cos = Math.cos(rads),
-      sin = Math.sin(rads),
-      rx = this.x - center.x,
-      ry = this.y - center.y
-    this.x = Math.fround((cos * (rx)) + (sin * (ry)) + center.x)
-    this.y = Math.fround((cos * (ry)) - (sin * (rx)) + center.y)
-  }
-
-  adjustToScale(factor) {
-    this.x = this.x * factor
-    this.y = this.y * factor
-  }
-
-
-}
 
 class Object2D {
   type = "Object2D"
@@ -113,7 +81,7 @@ class RATriangle extends Triangle {
 class EQTriangle extends Triangle {
   constructor(width, color) {
     let v1 = new Vertex(0, 0)
-    let v2 = new Vertex(width/2, width)
+    let v2 = new Vertex(width / 2, width)
     let v3 = new Vertex(width, 0)
 
     super({ v1, v2, v3 },
@@ -163,3 +131,82 @@ class Circle extends Object2D {
     return buffer
   }
 }
+
+
+
+
+// ===============================================================
+
+class Geometry {
+  constructor(gl, shader, vertices, indices) {
+    this.gl = gl
+    this.shader = shader
+    this.vertices = vertices
+    this.indices = indices
+    this.color = color
+
+    this.vertexBuffer = this.createVertexBuffer()
+    this.indexBuffer = this.createIndexBuffer()
+  }
+  createVertexBuffer() {
+    const buffer = this.gl.createBuffer()
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer)
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertices), this.gl.STATIC_DRAW)
+    this.gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    return buffer
+  }
+  createIndexBuffer() {
+    const buffer = this.gl.createBuffer()
+    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, buffer)
+    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.indices), this.gl.STATIC_DRAW)
+    return buffer
+  }
+
+
+  draw() {
+    this.scaleX = 1
+    this.scaleY = 1
+
+    // this.shader = new Shader(this.gl, scaleVertexShaderSource, fragmentShaderSource)
+
+    this.shader.use()
+
+    const xformMatrix = new Float32Array([
+      this.scaleX, 0.0, 0.0, 0.0,
+      0.0, this.scaleY, 0.0, 0.0,
+      0.0, 0.0, 1, 0.0,
+      0.0, 0.0, 0.0, 1
+    ])
+
+    var u_xformMatrix = this.shader.getUniformLocation('u_xformMatrix')
+    this.gl.uniformMatrix4fv(u_xformMatrix, false, xformMatrix);
+
+
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer)
+    console.log(this.vertexBuffer)
+
+    this.coordinatesVar = this.shader.getAttributeLocation('coordinates')
+    this.gl.vertexAttribPointer(this.coordinatesVar, 3, this.gl.FLOAT, false, 0, 0)
+    // this.shader.setColor(this.color)
+
+    this.gl.enableVertexAttribArray(this.coordinatesVar)
+
+
+    this.gl.clearColor(0.9, 0.9, 0.9, 1)
+    this.gl.enable(this.gl.DEPTH_TEST)
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT)
+    this.gl.viewport(0, 0, 300, 300)
+
+    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
+    console.log(this.vertexBuffer)
+    this.gl.drawArrays(gl.TRIANGLES, 0, this.indices.length)
+    // this.gl.drawElements(
+    //   this.gl.TRIANGLES, 
+    //   this.indices.length, 
+    //   this.gl.UNSIGNED_SHORT, 
+    //   0
+    // )
+  }
+}
+
+// =========================================================

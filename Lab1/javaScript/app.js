@@ -1,27 +1,21 @@
-
 var canvas = document.getElementById('glcanvas');
-canvas.width = 900
-canvas.height = 800
 
+let gl = canvas.getContext('webgl')
 
+let shader = new Shader(gl, vertexShaderSource, fragmentShaderSource)
 
-let scene = new Scene(new ColorRGBA(1, 1, 1, 1))
-let renderer = new Renderer(canvas)
+let vertices = [
+  0, 0, 0
+]
+let indices = [0, 1, 2]
 
-let group = new Group()
+let geometry = new CircleGeometry(gl, vertices, 0.3)
+geometry.position.translate([0.2,0.2])
+geometry.draw()
 
-let triangle = new RATriangle(0.5, 0.5, new ColorRGBA(1, 0, 0, 1))
-let triangle2 = new RATriangle(0.5, 0.5, new ColorRGBA(1, 0, 0, 1))
-triangle.translate(-0.3, 0.3)
+// ========
 
+// let color = new ColorRGBA(1, 0, 0, 1)
+// let shape = new Geometry(gl, shader, vertices, indices, color)
 
-group.add(triangle, triangle2)
-group.translate(0.2, 0.2)
-
-// console.log(triangle)
-
-let circle = new Circle(0.5, new ColorRGBA(1, 0, 0, 1))
-circle.scale(0.1)
-circle.translate(0, 0.4)
-scene.add(circle)
-renderer.render(scene)
+// shape.draw()
