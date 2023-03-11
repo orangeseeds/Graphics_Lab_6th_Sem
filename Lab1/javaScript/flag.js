@@ -1,3 +1,9 @@
+document.getElementById("resolution").innerHTML =
+  "Your screen resolution is: " +
+  (window.screen.width * window.devicePixelRatio).toFixed(2) +
+  "x" +
+  (window.screen.height * window.devicePixelRatio).toFixed(2);
+
 var canvas = document.querySelector("canvas");
 var gl = canvas.getContext("webgl");
 if (!gl) {
@@ -9,12 +15,7 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexData), gl.STATIC_DRAW);
 const vertexShader = gl.createShader(gl.VERTEX_SHADER);
 gl.shaderSource(
   vertexShader,
-  `
-attribute vec3 position;
-void main() {
-    gl_Position = vec4(position, 1);
-}
-`
+  `attribute vec3 position;void main() {gl_Position = vec4(position, 1);}`
 );
 gl.compileShader(vertexShader);
 function Triangles(color, start, end) {
@@ -33,21 +34,7 @@ function Triangles(color, start, end) {
     gl.drawArrays(gl.TRIANGLES, i, 3);
   }
 }
-// Blue
-Triangles(`void main() {gl_FragColor = vec4(0, 0, 1, 1);}`, 6, 9);
-//Red;
-Triangles(`void main() {gl_FragColor = vec4(1, 0, 0, 1);}`, 0, 3);
-// Moon
-Triangles(`void main() {gl_FragColor = vec4(1, 1, 1, 1);}`, 36, 45);
-// Sun
-Triangles(`void main() {gl_FragColor = vec4(1, 1, 1, 1);}`, 12, 33);
-
-function getResolution() {
-  alert(
-    "Your screen resolution is: " +
-      (window.screen.width * window.devicePixelRatio).toFixed(2) +
-      "x" +
-      (window.screen.height * window.devicePixelRatio).toFixed(2)
-  );
-}
-getResolution();
+Triangles(`void main() {gl_FragColor = vec4(0, 0, 1, 1);}`, 6, 9); //Blue
+Triangles(`void main() {gl_FragColor = vec4(1, 0, 0, 1);}`, 0, 3); //Red
+Triangles(`void main() {gl_FragColor = vec4(1, 1, 1, 1);}`, 36, 45); //Moon
+Triangles(`void main() {gl_FragColor = vec4(1, 1, 1, 1);}`, 12, 33); //Sun
