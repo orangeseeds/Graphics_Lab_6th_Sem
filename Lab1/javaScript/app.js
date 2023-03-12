@@ -4,6 +4,8 @@
 */
 
 var canvas = document.getElementById('glcanvas');
+canvas.width = 500
+canvas.height = 500
 let renderer = new Renderer(canvas)
 let scene = new Scene()
 
@@ -64,12 +66,13 @@ function sun() {
     sun.setColor(colors.white)
   }
   return sun
+
 }
 
 const moon = () => {
   let c = cresent()
   let s = sun()
-  s.scale([1.6, 1.6])
+  s.scale([1.65, 1.65])
   s.translate([-0.16, -0.26])
   let m = new Group()
   m.add(s, c)
@@ -81,8 +84,8 @@ const moon = () => {
 function fullFlag() {
   let flag = flagCloth()
   let sunU = sun()
-  sunU.scale([0.8, 0.8])
-  sunU.translate([0.14, -0.37])
+  sunU.scale([0.85, 0.85])
+  sunU.translate([0.12, -0.37])
   let moonD = moon()
 
   flagNepal = new Group()
