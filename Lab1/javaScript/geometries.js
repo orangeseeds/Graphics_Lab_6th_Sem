@@ -2,7 +2,7 @@
 class BufferGeometry {
   constructor() {
     this.extensions = {}
-    this.color = [1, 0, 0, 1]
+    this.color = [0.4, 0.4, 0.4, 1]
   }
 
   setAttribute(vertices, itemSize) {
@@ -14,6 +14,8 @@ class BufferGeometry {
     this.color = color
   }
 
+  // this adds new function which might be required for computations to an 
+  //already existing class from the outside the class.
   addExtension(name, extension) {
     this.extensions[name] = extension
   }

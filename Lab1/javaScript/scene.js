@@ -9,7 +9,7 @@ class Scene {
     this.objects.push(...objects)
   }
 
-  setBackgroundColor(color){
+  setBackgroundColor(color) {
     this.color = color
   }
 }
@@ -72,6 +72,24 @@ class Group {
   scale(vector) {
     this.children.forEach((child) => {
       this.#scale(child, vector)
+    })
+  }
+
+
+  #setColor(object, color) {
+    if (object.isGroup) {
+      object.children.forEach((c) => {
+        object.#setColor(c, color)
+      })
+    }
+    else {
+      object.setProperties({ color: color })
+    }
+  }
+
+  setColor(color) {
+    this.children.forEach((child) => {
+      this.#setColor(child, color)
     })
   }
   // rotate(){}
