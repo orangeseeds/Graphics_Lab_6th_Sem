@@ -7,6 +7,7 @@ class Renderer {
   }
 
   createVertexBuffer(geometry) {
+    console.log(geometry)
     const buffer = this.gl.createBuffer()
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer)
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(geometry.vertices), this.gl.STATIC_DRAW)
@@ -57,7 +58,7 @@ class Renderer {
       this.gl.enableVertexAttribArray(coord);
 
       this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, object.indexBuffer)
-      this.gl.drawArrays(this.gl.TRIANGLES, 0, object.indices.length)
+      this.gl.drawArrays(this.gl.TRIANGLE_FAN, 0, object.indices.length)
     }
   }
 

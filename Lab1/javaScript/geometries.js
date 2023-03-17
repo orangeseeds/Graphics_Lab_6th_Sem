@@ -67,3 +67,15 @@ class RATriangleGeometry extends BufferGeometry {
     ], 3)
   }
 }
+
+class RectangleGeometry extends BufferGeometry {
+  constructor(width = 0.3, height = 0.3) {
+    super()
+    this.setAttribute([
+      0, 0, 0,
+      width, 0, 0,
+      width, height, 0,
+      0, height, 0
+    ], 4)
+  }
+}
