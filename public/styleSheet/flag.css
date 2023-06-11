@@ -1,33 +1,22 @@
-.Container {
+body {
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
 .Container h1 {
-  padding-left: 100px;
   color: blue;
 }
 
+.Container p {
+  color: red;
+}
+
 .display_area {
-  width: 500px;
-  height: 500px;
-}
-.moon {
-  position: absolute;
-  padding-top: 90px;
+  width: 50vw;
+  height: 50vw;
 }
 
-.sun {
-  position: absolute;
-  padding-top: 180px;
-}
-
-.moon img {
-  width: 50px;
-}
-
-.sun img {
-  width: 50px;
-}
 .socials {
   display: flex;
   justify-content: center;
@@ -59,35 +48,8 @@
   bottom: 0;
   color: black;
 }
+
 .footer h3 {
   margin: 0;
-  padding: 0;
-}
-
-@media Screen and (min-width: 460px) {
-  .moon {
-    padding-left: 51%;
-  }
-
-  .sun {
-    padding-left: 51%;
-  }
-}
-
-@media Screen and (max-width: 460px) {
-  .moon {
-    padding-left: 63%;
-  }
-  .sun {
-    padding-left: 63%;
-  }
-}
-
-@media Screen and (max-width: 395px) {
-  .moon {
-    padding-left: 73%;
-  }
-  .sun {
-    padding-left: 73%;
-  }
+  padding: 2px;
 }
