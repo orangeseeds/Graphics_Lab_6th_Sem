@@ -62,7 +62,7 @@ class Renderer {
                     this.gl.drawArrays(this.gl.POINTS, 0, object.indices.length)
                     break
                 case "line":
-                    this.gl.drawArrays(this.gl.LINES, 0, object.indices.length)
+                    this.gl.drawArrays(this.gl.LINE_LOOP, 0, object.indices.length)
                     break
                 default:
                     this.gl.drawArrays(this.gl.TRIANGLES, 0, object.indices.length)
